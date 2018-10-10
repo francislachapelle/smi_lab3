@@ -10,7 +10,7 @@
 
 #include "stdint.h"
 
-#define			KEYPAD_PORT				  GPIOA
+#define			KEYPAD_PORT				  GPIOE
 
 /* Input */
 #define 		KEYPAD_ROW_1_PIN		  GPIO_Pin_0
@@ -49,5 +49,7 @@ void 				init_keypad(void);
 KEYPAD_BUTTON_type* keypad_update(void);
 KEYPAD_BUTTON_type* get_keypad_button(uint8_t keypad_button_index);
 void scan_columns(void);
+unsigned char get_symbol(uint8_t keypad_button_value);
+
 
 #endif /* KEYPAD_H_ */

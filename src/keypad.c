@@ -138,6 +138,49 @@ KEYPAD_BUTTON_type* keypad_update(void)
 	return (KEYPAD_BUTTON_type*)0xFF;
 }
 
+unsigned char get_symbol(uint8_t keypad_button_value)
+{
+	switch (keypad_button_value)
+	{
+		case 0x00:
+			return '0';
+			break;
+		case 0x01:
+			return '1';
+			break;
+		case 0x02:
+			return '2';
+			break;
+		case 0x03:
+			return '3';
+			break;
+		case 0x04:
+			return '4';
+			break;
+		case 0x05:
+			return '5';
+			break;
+		case 0x06:
+			return '6';
+			break;
+		case 0x07:
+			return '7';
+			break;
+		case 0x08:
+			return '8';
+			break;
+		case 0x09:
+			return '9';
+			break;
+		case 0x0A:
+			return 'A';
+			break;
+		default:
+			while(1);
+
+	}
+}
+
 void read_keys(uint8_t column)
 {
 	for (int column_index = 0; column_index < 3; ++column_index)
