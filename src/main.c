@@ -30,6 +30,7 @@
 #include "gpio.h"
 #include "timer.h"
 #include "lcd.h"
+#include "keypad.h"
 
 /** @addtogroup STM32F4_Discovery_Peripheral_Examples
   * @{
@@ -60,11 +61,10 @@ int main(void)
 	init_gpio();
 	init_timer();
 	delay_ms(45);
-	TM_LCD_Init(NUMBER_OF_COLS, NUMBER_OF_ROWS);
-	//init_lcd(NUMBER_OF_COLS, NUMBER_OF_ROWS);
+	//TM_LCD_Init(NUMBER_OF_COLS, NUMBER_OF_ROWS);
 	while (1)
 	{
-		update_lcd();
+		keypad_update();
 	}
 }
 

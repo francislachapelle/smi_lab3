@@ -148,6 +148,60 @@ void SysTick_Handler(void)
 	delay_ms_decrement();
 }
 
+/**
+  * @brief  This function handles External line 0 interrupt request.
+  * @param  None
+  * @retval None
+  */
+void EXTI0_IRQHandler(void)
+{
+  if(EXTI_GetITStatus(EXTI_Line0) != RESET)
+  {
+    /* Clear the EXTI line 0 pending bit */
+    EXTI_ClearITPendingBit(EXTI_Line0);
+  }
+}
+/**
+  * @brief  This function handles External line 0 interrupt request.
+  * @param  None
+  * @retval None
+  */
+void EXTI1_IRQHandler(void)
+{
+  if(EXTI_GetITStatus(EXTI_Line1) != RESET)
+  {
+
+	  /* Clear the EXTI line 0 pending bit */
+	  EXTI_ClearITPendingBit(EXTI_Line1);
+  }
+}
+/**
+  * @brief  This function handles External line 0 interrupt request.
+  * @param  None
+  * @retval None
+  */
+void EXTI2_IRQHandler(void)
+{
+  if(EXTI_GetITStatus(EXTI_Line2) != RESET)
+  {
+
+	  /* Clear the EXTI line 0 pending bit */
+	  EXTI_ClearITPendingBit(EXTI_Line2);
+  }
+}
+/**
+  * @brief  This function handles External line 0 interrupt request.
+  * @param  None
+  * @retval None
+  */
+void EXTI3_IRQHandler(void)
+{
+  if(EXTI_GetITStatus(EXTI_Line3) != RESET)
+  {
+	  /* Clear the EXTI line 0 pending bit */
+	  EXTI_ClearITPendingBit(EXTI_Line3);
+  }
+}
 
 /******************************************************************************/
 /*                 STM32F4xx Peripherals Interrupt Handlers                   */
