@@ -23,13 +23,15 @@
 #define 		KEYPAD_COL_2_PIN		  GPIO_Pin_5
 #define 		KEYPAD_COL_3_PIN		  GPIO_Pin_6
 
+#define 		KEYPAD_COLUMNS_GPIO		 GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6
+
 #define 		NUMBER_OF_KEYPAD_BUTTON   12
 
 typedef enum
 {
-	KEY_RELEASED = 0
-  , KEY_PRESSED  = 1
-  , KEY_IDLE 	 = -1
+	KEY_RELEASED 	     = 0
+  , KEY_PRESSED  		 = 1
+  , KEY_TRIPLE_TOUCH 	 = 2
 } KEY_STATE_t;
 
 typedef struct
@@ -44,7 +46,7 @@ typedef struct
 } KEYPAD_BUTTON_type;
 
 void 				init_keypad(void);
-void 			    keypad_update(void);
+KEYPAD_BUTTON_type* keypad_update(void);
 KEYPAD_BUTTON_type* get_keypad_button(uint8_t keypad_button_index);
 void scan_columns(void);
 

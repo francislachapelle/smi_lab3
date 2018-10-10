@@ -57,14 +57,22 @@
   */
 int main(void)
 {
-
 	init_gpio();
 	init_timer();
 	delay_ms(45);
 	//TM_LCD_Init(NUMBER_OF_COLS, NUMBER_OF_ROWS);
 	while (1)
 	{
-		keypad_update();
+		KEYPAD_BUTTON_type* keypressed_ptr = keypad_update();
+
+		if (keypressed_ptr != (void*)0xFF)
+		{
+			/*do
+			{*/
+				uint8_t key_pressed = keypressed_ptr->keypad_button_value;
+				++keypressed_ptr;
+			//} while (keypressed_ptr < get_keypad_button(NUMBER_OF_KEYPAD_BUTTON));
+		}
 	}
 }
 
