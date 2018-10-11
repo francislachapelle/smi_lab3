@@ -60,72 +60,11 @@ int main(void)
 	init_gpio();
 	init_timer();
 	delay_ms(45);
-	//TM_LCD_Init(NUMBER_OF_COLS, NUMBER_OF_ROWS);
-	unsigned short cmd = 0;
+	initLcd();
 
-		//clear
-		cmd  = 0b01;
-		writeCommand(cmd);
-	/*
-		//home
-		cmd  = 0b010;
-		writeCommande(cmd);
-
-		//cursor
-		cmd  = 0b0111;
-		writeCommande(cmd);
-	*/
-		//set fonction
-		cmd  = 0b0110000;
-		writeCommand(cmd);
-
-		//Display on
-		cmd  = 0b01110;
-		writeCommand(cmd);
-		/*
-		//set fonction
-		cmd  = 0b0111111;
-		writeCommande(cmd);
-
-
-
-		//Entry mode set
-		cmd  = 0b0110;
-		writeCommand(cmd);
-
-		//W
-		writeSymbol('W');
-	*/
-		/*
-		cmd  = 0b0000110011;
-		writeCommand(cmd);
-		cmd  = 0b01110;
-		writeCommand(cmd);
-		cmd  = 0b0110;
-		writeCommand(cmd);
-		cmd  = 0b1001010111;
-		writeCommand(cmd);*/
-		writeSymbol('SMI_NGFL');
 	while (1)
 	{
-		KEYPAD_BUTTON_type* keypressed_ptr = keypad_update();
-
-		if (keypressed_ptr != (void*)0xFF)
-		{
-			//do
-			//{
-			uint8_t key_pressed = keypressed_ptr->keypad_button_value;
-			unsigned char symbol = get_symbol(key_pressed);
-			if (symbol == 'A')
-			{
-				cmd  = 0b01;
-				writeCommand(cmd);
-			}
-			else
-				writeSymbol(symbol);
-			//	++keypressed_ptr;
-			//} while (keypressed_ptr < get_keypad_button(NUMBER_OF_KEYPAD_BUTTON));
-		}
+		updateLcd();
 	}
 }
 

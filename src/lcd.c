@@ -32,6 +32,31 @@
 #include "lcd.h"
 #include "stm32f4_discovery.h"
 #include "timer.h"
+#include "string.h"
+#include "keypad.h"
+
+/* Private variables */
+static uint8_t number_of_characters_counter;
+static char    first_line[8]				 = "SMI_NFGL";
+static uint8_t size_of_first_line_string;
+
+void initLcd(void)
+{
+	number_of_characters_counter = 0;
+	size_of_first_line_string = strlen(first_line);
+	//clear
+	writeCommand(CMD_LCD_CLEAR);
+
+	//function set : 2 lines, 8 bits and 5x8 dots
+	writeCommand(CMD_LCD_FUNCTION_2_LINES_8_BITS);
+
+	//Display on
+	writeCommand(CMD_LCD_DISPLAY_ON);
+
+
+	writeSymbol(first_line, size_of_first_line_string - 1);
+	writeCommand(CMD_LCD_CHANGE_LINE);
+}
 
 void writeCommand( unsigned short p_command)
 {
@@ -56,8 +81,39 @@ void writeCommand( unsigned short p_command)
 	GPIO_ResetBits(GPIOA, 0x00FF);
 }
 
-void writeSymbol( unsigned char p_symbol)
+void writeSymbol(char * p_symbol, uint8_t size_of_symbol)
 {
-	unsigned short cmd = 0b10000000000 | p_symbol;
-	writeCommand(cmd);
+	for (int i = 0; i < size_of_symbol; ++i)
+	{
+		unsigned short cmd = 0b10000000000 | p_symbol[i];
+		writeCommand(cmd);
+	}
+}
+
+void updateLcd(void)
+{
+	KEYPAD_BUTTON_type* keypressed_ptr = keypad_update();
+
+	if (keypressed_ptr != (void*)0xFF)
+	{
+		//do
+		//{
+		uint8_t key_pressed = keypressed_ptr->keypad_button_value;
+		char symbol[1] = {get_symbol(key_pressed)};
+		if (symbol[0] == 'A')
+		{
+			writeCommand(CMD_LCD_CLEAR);
+			writeSymbol(first_line, size_of_first_line_string - 1);
+			writeCommand(CMD_LCD_CHANGE_LINE);
+			number_of_characters_counter = 0;
+		}
+		else if (number_of_characters_counter < 16)
+		{
+			writeSymbol(symbol, 1);
+			++number_of_characters_counter;
+		}
+			//	++keypressed_ptr;
+		//} while (keypressed_ptr < get_keypad_button(NUMBER_OF_KEYPAD_BUTTON));
+}
+
 }
