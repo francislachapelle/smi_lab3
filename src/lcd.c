@@ -37,7 +37,7 @@
 
 /* Private variables */
 static uint8_t number_of_characters_counter;
-static char    first_line[8]				 = "SMI_NFGL";
+static char    first_line[8]				 = "SMI_NGFL";
 static uint8_t size_of_first_line_string;
 
 void initLcd(void)
@@ -54,7 +54,7 @@ void initLcd(void)
 	writeCommand(CMD_LCD_DISPLAY_ON);
 
 
-	writeSymbol(first_line, size_of_first_line_string - 1);
+	writeSymbol(first_line, size_of_first_line_string);
 	writeCommand(CMD_LCD_CHANGE_LINE);
 }
 
@@ -103,7 +103,7 @@ void updateLcd(void)
 		if (symbol[0] == 'A')
 		{
 			writeCommand(CMD_LCD_CLEAR);
-			writeSymbol(first_line, size_of_first_line_string - 1);
+			writeSymbol(first_line, size_of_first_line_string);
 			writeCommand(CMD_LCD_CHANGE_LINE);
 			number_of_characters_counter = 0;
 		}

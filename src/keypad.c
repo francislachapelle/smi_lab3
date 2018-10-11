@@ -62,27 +62,12 @@ KEYPAD_BUTTON_type* get_keypad_button(uint8_t keypad_button_index)
 KEYPAD_BUTTON_type* keypad_update(void)
 {
 	static uint8_t keypad_button_index = 0;
-	static uint8_t triple_touch_detected = 0;
-	if (keypad_button_index == NUMBER_OF_KEYPAD_BUTTON)
-	{
-		keypad_button_index = 0;
-		if (!triple_touch_detected)
-			return pressed_keypad_buttons[0];
-	}
-	else if (keypad_button_index == 0)
-	{
-		for (int i = 0; i < 3; ++i)
-		{
-			pressed_keypad_buttons[i] = (KEYPAD_BUTTON_type*)0xFF;
-			keypressed_counter = 0;
-		}
-	}
 
+	keypad_button_index = keypad_button_index == NUMBER_OF_KEYPAD_BUTTON ? 0 : keypad_button_index;
 
 	KEYPAD_BUTTON_type* keypad_button_ptr = get_keypad_button(keypad_button_index);
 
-	if (!triple_touch_detected)
-		read_keys(keypad_button_ptr->column);
+	read_keys(keypad_button_ptr->column);
 
 	switch (keypad_button_ptr->actual_key_state)
 	{
@@ -98,39 +83,8 @@ KEYPAD_BUTTON_type* keypad_update(void)
 			if (keypad_button_ptr->previous_key_state == KEY_RELEASED)
 			{
 				keypad_button_ptr->previous_key_state = keypad_button_ptr->actual_key_state;
-				if  (keypressed_counter < 2)
-				{
-					pressed_keypad_buttons[keypressed_counter] = keypad_button_ptr;
-					++keypressed_counter;
-					++keypad_button_index;
-				}
-				else
-				{
-					pressed_keypad_buttons[keypressed_counter] = keypad_button_ptr;
-					pressed_keypad_buttons[0]->actual_key_state = KEY_TRIPLE_TOUCH;
-					pressed_keypad_buttons[1]->actual_key_state = KEY_TRIPLE_TOUCH;
-					pressed_keypad_buttons[2]->actual_key_state = KEY_TRIPLE_TOUCH;
-					triple_touch_detected = 1;
-					keypressed_counter = 0;
-				}
+				return keypad_button_ptr;
 			}
-			break;
-		case KEY_TRIPLE_TOUCH:
-			for (int i = 0; i < 3; ++i)
-			{
-				read_keys(pressed_keypad_buttons[i]->column);
-				if (pressed_keypad_buttons[i]->actual_key_state == KEY_RELEASED)
-				{
-					triple_touch_detected = 0;
-					++keypad_button_index;
-				}
-				else if (pressed_keypad_buttons[i]->actual_key_state == KEY_PRESSED)
-				{
-					triple_touch_detected = 1;
-					pressed_keypad_buttons[i]->actual_key_state = KEY_TRIPLE_TOUCH;
-				}
-			}
-
 			break;
 		default:
 			while(1);
@@ -194,10 +148,6 @@ void set_column(uint8_t column_index)
 {
 
 	uint8_t actual_column_gpio = get_keypad_button(column_index)->column_gpio;
-
-	//GPIO_SetBits(KEYPAD_PORT, KEYPAD_COLUMNS_GPIO);
-
-	//GPIO_ResetBits(KEYPAD_PORT, actual_column_gpio);
 
 	GPIO_ResetBits(KEYPAD_PORT, KEYPAD_COLUMNS_GPIO);
 
